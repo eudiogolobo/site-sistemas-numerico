@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <title>Conversor</title>
+</head>
+<body>
+    <nav class="navbar sticky-top navbar-expand-lg bg-dark border-bottom border-body" data-bs-theme="dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#"><img style="width: 200px; color: transparent;" src="../logoTroia.png" alt=""></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarText">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                <a  id="link-documentacao" class="nav-link" aria-current="page" href="../documentation.html">Documentação</a>
+                </li>
+                <li class="nav-item">
+                <a id="link-calculadora" class="nav-link" href="#">Calculadora</a>
+                </li>
+                <li class="nav-item">
+                <a class="nav-link" href="#"></a>
+                </li>
+            </ul>
+            <span class="navbar-text">
+                
+            </span>
+            </div>
+        </div>
+    </nav>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.10/jquery.mask.js"></script>
+
+<div class="container">
+    <div class="row p-4">
+
+            <h4>Calculadora de conversão de sistemas numéricos</h4>
+            <hr>
+            
+            <div class="col-md-6">
+                <label class="form-label" for="decimal">Decimal</label>
+                <input id="decimal" class="form-control" type="text">
+
+                <label class="form-label" for="octal">Octal</label>
+                <input id="octal" class="form-control" type="text">
+
+                <label class="form-label" for="hexadeciamal">Hexadeciamal</label>
+                <input id="hexadecimal" class="form-control" type="text" style="text-transform: uppercase;"  maxlength="9">
+
+                <label class="form-label" for="binario">Binário</label>
+                <input id="binario" class="form-control" type="text">
+            </div>
+
+            <div class="col-md-6">
+                
+
+            </div>
+    </div>
+
+
+
+<script>
+    $(document).ready(()=>{
+
+        $('#link-calculadora').addClass('active')
+
+        $('#decimal').mask("000000000")
+        $('#octal').mask("000000000")
+        $('#binario').mask("000000000000")
+
+        $('#decimal').keyup(function(){
+
+            $('#binario').val(divisaoFunction($('#decimal').val(), 2))
+
+            $('#octal').val(divisaoFunction($('#decimal').val(), 8))
+            $('#hexadecimal').val(divisaoFunction($('#decimal').val(), 16))
+          
+        })
+
+    
+
+        $('#octal').keyup(function () { 
+            this.value = this.value.replace(/[^0-7]/,'').replace(' ','');
+
+            $('#decimal').val(polinomio($('#octal').val(), 8))
+
+            $('#binario').val(groupBits('octal',$('#octal').val(), 3))
+
+        })
+
+
+
+        $('#hexadecimal').keyup(function () { 
+            this.value = this.value.replace(/[^A-Fa-f 0-9]/,'').replace(' ','');
+
+            $('#decimal').val(polinomio($('#hexadecimal').val(), 16))
+
+            $('#binario').val(groupBits('hexadecimal',$('#hexadecimal').val(), 4))
+
+        })
+
+     
+
+        $('#binario').keyup(function (){
+            
+            this.value = this.value.replace(/[^0-1]/, '').replace(' ', '')
+
+          
+            $('#decimal').val(polinomio($('#binario').val(), 2)) 
+
+            $('#hexadecimal').val(groupBits('binario',$('#binario').val(), 4))
+
+            $('#octal').val(groupBits('binario',$('#binario').val(), 3))
+
+        })
+    })
+
+</script>
+
+<script>
+
+    function groupBits(sistema,numberGp, bits){
+        countBits = 0
+        arrayList = []
+        breaking = ''
+        wordTemp = ''
+
+        if(sistema == 'binario')
+        {
+            numberGp = numberGp.split('').reverse().join('')
+
+            divisao = Math.ceil(numberGp.length / bits);
+
+            for(z = 0; z < divisao; z++)
+            {
+                if(numberGp.substr(countBits, bits) != ''){
+
+                    if(countBits === 0)
+                    {
+                        arrayList.push(numberGp.substr(countBits,bits))
+                    
+
+                    }else{
+                        arrayList.push(numberGp.substr(countBits, bits))
+                
+                    }
+            
+
+                    wordTemp = arrayList[z]
+                    wordTemp = wordTemp.split('').reverse().join('')
+
+                    arrayList[z] = wordTemp
+
+                    
+                    
+                }
+
+                countBits += bits
+                
+            }
+
+
+
+            countBits = 0
+
+            for(let item of arrayList)
+            {
+                
+                arrayList[countBits] = polinomio(item, 2)
+                countBits += 1
+            }
+
+            if(bits == 4)
+            {
+                arrayList = (arrayList.reverse().toString()).replaceAll('10', 'A').replaceAll('11', 'B').replaceAll('12', 'C').replaceAll('13', 'D').replaceAll('14', 'E').replaceAll('15', 'F').replaceAll(',','')
+                
+            }
+
+            if(bits == 3)
+            {
+                arrayList = (arrayList.reverse().toString()).replaceAll(',','')
+            }
+
+
+        }
+
+        numberDecimal = 0
+
+        if(sistema == 'octal')
+        {
+            numberDecimal = polinomio(numberGp, 8)
+            arrayList = divisaoFunction(numberDecimal, 2)
+
+            $('#hexadecimal').val( divisaoFunction(numberDecimal, 16))
+        }
+
+        if(sistema == 'hexadecimal')
+        {
+            numberDecimal = polinomio(numberGp, 16)
+            arrayList = divisaoFunction(numberDecimal, 2)
+        
+
+            $('#octal').val( divisaoFunction(numberDecimal, 8))
+        }
+       
+           
+        return arrayList
+        
+    }
+
+       
+        
+    
+
+    function polinomio(number, base)
+    {
+        newNumber = 0
+        numberPosition = 0
+        number = number.split("").reverse().join("")
+
+        
+
+        for(i = 0; i < number.length; i++)
+        {
+            numberPosition = 0
+
+            if(isNaN(number[i]) == false){
+
+                newNumber += number[i] * Math.pow(base, i)
+
+               
+
+            } else{
+
+                numberPosition = (number[i].toUpperCase()).replaceAll('A','10').replaceAll('B','11').replaceAll('C','12').replaceAll('D',13).replaceAll('E','14').replaceAll('F','15')
+                
+                newNumber += numberPosition * Math.pow(base, i)
+
+                
+            }
+
+           
+        }
+
+        
+        return newNumber 
+        
+    }
+  
+
+   
+
+   function divisaoFunction(number, base){
+
+    newNumber = []
+    count = 0
+    resto = 0
+
+
+        while(true)
+        {
+
+             if(number <= 1){
+
+                newNumber[count] =  number;
+                break
+
+             }
+                resto = (number % base);
+
+                number = (number / base)|0;
+
+              
+
+                
+
+                newNumber[count] =  resto;
+
+                count += 1;
+
+        }
+
+       
+        console.log(newNumber)
+        if(base == 2)
+        {
+            newNumber =  (newNumber.reverse().toString()).replaceAll(',','')
+            return newNumber
+        }
+      
+
+            newNumber = newNumber.reverse()
+
+            countB = 0
+
+           while(true)
+            {
+                if(newNumber[countB] === 0)
+                {
+                    newNumber.splice(countB, 1)
+
+                  
+                    console.log(newNumber)
+
+                }
+                if(newNumber[countB] != 0)
+                { 
+                  
+                    break; 
+                    
+                }
+
+                countB += 1
+                
+            }
+
+
+
+        if(base == 8)
+        {
+            newNumber = (newNumber.toString()).replaceAll(',','')
+        }
+
+        if(base == 16)
+        {
+            newNumber =((newNumber.toString()).replaceAll('10', 'A').replaceAll('11', 'B').replaceAll('12', 'C').replaceAll('13', 'D').replaceAll('14', 'E').replaceAll('15', 'F')).replaceAll(',','')
+        }
+
+        return newNumber
+
+}
+</script>
+    
+</body>
+</html>
