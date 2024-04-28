@@ -45,16 +45,49 @@
             
             <div id="group-inputs" class="col-md-7">
                 <label class="form-label" for="decimal">Decimal</label>
-                <input id="decimal" class="form-control" type="text">
+                <div class="" style="display:  flex;">
+                    <div class="col-md-10">
+                        <input id="decimal" class="form-control" type="text">
+                    </div>
+                    <div class="col-md-2" style="padding: 0 0 0 10px;">
+                        <button data-bs-toggle="modal" data-bs-target="#modal-calculo" style="width: 100%;" class="btn btn-success">Cálculo</button>
+                    </div>
+                </div>
 
                 <label class="form-label" for="hexadeciamal">Hexadeciamal</label>
-                <input id="hexadecimal" class="form-control" type="text" style="text-transform: uppercase;"  maxlength="9">
+
+                <div class="" style="display:  flex;">
+                    <div class="col-md-10">
+                        <input id="hexadecimal" class="form-control" type="text" style="text-transform: uppercase;"  maxlength="9">
+                    </div>
+                    <div class="col-md-2" style="padding: 0 0 0 10px;">
+                        <button data-bs-toggle="modal" data-bs-target="#modal-calculo" style="width: 100%;" class="btn btn-success">Cálculo</button>
+                    </div>
+                </div>
 
                 <label class="form-label" for="octal">Octal</label>
-                <input id="octal" class="form-control" type="text">
+
+                <div class="" style="display:  flex;">
+                    <div class="col-md-10">
+                        <input id="octal" class="form-control" type="text">
+                    </div>
+                    <div class="col-md-2" style="padding: 0 0 0 10px;">
+                        <button data-bs-toggle="modal" data-bs-target="#modal-calculo" style="width: 100%;" class="btn btn-success">Cálculo</button>
+                    </div>
+                </div>
 
                 <label class="form-label" for="binario">Binário</label>
-                <input id="binario" class="form-control" type="text">
+
+                <div class="" style="display:  flex;">
+                    <div class="col-md-10">
+                        <input id="binario" class="form-control" type="text">
+                    </div>
+                    <div class="col-md-2" style="padding: 0 0 0 10px;">
+                        <button data-bs-toggle="modal" data-bs-target="#modal-calculo" style="width: 100%;" class="btn btn-success">Cálculo</button>
+                    </div>
+                </div>
+               
+               
             </div>
           
 
@@ -75,17 +108,6 @@
     
                         </tbody>
                     </table>    
-
-                    <script>
-                        $(document).ready(()=>{
-
-                        if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
-                            
-                        }
-                        else{
-                            //alert('desk')
-                        }})
-                    </script>
 
                 </div>
 
@@ -111,6 +133,29 @@
                 </div>
                 <span style="margin-left: 1rem;">Parabéns por ser da nossa <br> equipe, parabéns por ser <br> um troiano!</span>
            
+            </div>
+            
+            <div class="modal-footer g-3">
+              <div id="group-buttons-modal-redirect" class="d-grid gap-2 d-md-flex justify-content-md-centered" style="width:100%">
+                  <button id="btn-redirect-saved" style="width: 100%;" type="button" onmouseleave="" class="btn btn-success" data-bs-dismiss="modal">Ok</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal fade modal-lg"  id="modal-calculo" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true">
+        <div class="modal-dialog  modal-dialog-centered modal-dialog-scrollable">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5">Cálculo</h1>
+            </div>
+            
+            <div id="body-modal-calculo" class="modal-body" style="display: flex; align-items: start; flex-direction: row;">
+               <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Maiores modi adipisci sunt ratione tempore porro cupiditate quasi fugit, obcaecati nisi iste! Excepturi optio quam sunt. Ipsa similique vel quaerat pariatur.</p>
+               <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quam necessitatibus quisquam odit modi maxime! Aliquam eaque sint neque, deserunt placeat reiciendis iste in alias sunt! Dolorum ea recusandae aliquam libero!</p>
+               <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Hic et, inventore possimus libero deleniti reiciendis, culpa accusamus minima veniam blanditiis mollitia eius. Totam laudantium quaerat architecto dicta suscipit eaque assumenda.</p>
+                <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nisi molestias quibusdam inventore et maxime? Corrupti atque fugit quo id at perferendis dicta, dolorum qui sapiente nisi quas nesciunt laborum quaerat.</p>
             </div>
             
             <div class="modal-footer g-3">
