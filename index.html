@@ -5,171 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="style.css">
     <title>Conversor</title>
-    <style>
-        /**
- * Extracted from: SweetAlert
- * Modified by: Istiak Tridip
- */
-
-
-
- .success-checkmark {
-    width: 40px;
-    height: 40px;
-    margin-left: 20px;
-    
-    .check-icon {
-        width: 40px;
-        height: 40px;
-        position: relative;
-        border-radius: 50%;
-        box-sizing: content-box;
-        border: 2px solid #4CAF50;
-        
-        &::before {
-            top: 1.5px;
-            left: -1px;
-            width: 15px;
-            transform-origin: 100% 50%;
-            border-radius: 50px 0 0 50px;
-        }
-        
-        &::after {
-            top: 0;
-            left: 15px;
-            width: 30px;
-            transform-origin: 0 50%;
-            border-radius: 0 100px 100px 0;
-            animation: rotate-circle 4.25s ease-in;
-        }
-        
-        &::before, &::after {
-            content: '';
-            height: 50px;
-            position: absolute;
-            background: #FFFFFF;
-            transform: rotate(-45deg);
-        }
-        
-        .icon-line {
-            height: 2.5px;
-            background-color: #4CAF50;
-            display: block;
-            border-radius: 1px;
-            position: absolute;
-            z-index: 10;
-            
-            &.line-tip {
-                top: 23px;
-                left: 7px;
-                width: 12.5px;
-                transform: rotate(45deg);
-                animation: icon-line-tip 0.75s;
-            }
-            
-            &.line-long {
-                top: 19px;
-                right: 4px;
-                width: 23.5px;
-                transform: rotate(-45deg);
-                animation: icon-line-long 0.75s;
-            }
-        }
-        
-        .icon-circle {
-            top: -2px;
-            left: -2px;
-            z-index: 10;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            position: absolute;
-            box-sizing: content-box;
-            border: 2px solid rgba(76, 175, 80, .5);
-        }
-        
-        .icon-fix {
-            top: 4px;
-            width: 2.5px;
-            left: 13px;
-            z-index: 1;
-            height: 45px;
-            position: absolute;
-            transform: rotate(-45deg);
-            background-color: #FFFFFF;
-        }
-    }
-}
-
-@keyframes rotate-circle {
-    0% {
-        transform: rotate(-45deg);
-    }
-    5% {
-        transform: rotate(-45deg);
-    }
-    12% {
-        transform: rotate(-405deg);
-    }
-    100% {
-        transform: rotate(-405deg);
-    }
-}
-
-@keyframes icon-line-tip {
-    0% {
-        width: 0;
-        left: 0.5px;
-        top: 9.5px;
-    }
-    54% {
-        width: 0;
-        left: 0.5px;
-        top: 9.5px;
-    }
-    70% {
-        width: 25px;
-        left: -4px;
-        top: 18.5px;
-    }
-    84% {
-        width: 8.5px;
-        left: 10.5px;
-        top: 24px;
-    }
-    100% {
-        width: 12.5px;
-        left: 7px;
-        top: 22.5px;
-    }
-}
-
-@keyframes icon-line-long {
-    0% {
-        width: 0;
-        right: 23px;
-        top: 27px;
-    }
-    65% {
-        width: 0;
-        right: 23px;
-        top: 27px;
-    }
-    84% {
-        width: 27.5px;
-        right: 0px;
-        top: 17.5px;
-    }
-    100% {
-        width: 23.5px;
-        right: 4px;
-        top: 19px;
-    }
-}
-
-
-    </style>
 </head>
 <body>
     <nav class="navbar sticky-top navbar-expand-lg bg-dark border-bottom border-body" data-bs-theme="dark">
@@ -206,7 +43,7 @@
             <hr>
             <p>Os sistemas numéricos de programação comuns incluem binário (base 2), decimal (base 10), octal (base 8) e hexadecimal (base 16). A calculadora de conversão de sistemas numéricos permite que o usuário insira um número em qualquer sistema e converta-o para os outros.</p>
             
-            <div class="col-md-6">
+            <div id="group-inputs" class="col-md-7">
                 <label class="form-label" for="decimal">Decimal</label>
                 <input id="decimal" class="form-control" type="text">
 
@@ -219,10 +56,40 @@
                 <label class="form-label" for="binario">Binário</label>
                 <input id="binario" class="form-control" type="text">
             </div>
+          
 
-            <div class="col-md-6">
+            <div id="div-content-table" class="col-md-5">
+                <div  id="div-table">
+
+                    <table class="">
+                        <thead>
+                            <tr>
+                                <th>Decimal</th>
+                                <th>Hexadeciamal</th>
+                                <th>Octal</th>
+                                <th>Binário</th>
+                                
+                            </tr>
+                        </thead>
+                        <tbody id="datatable-numbers">
+    
+                        </tbody>
+                    </table>    
+
+                    <script>
+                        $(document).ready(()=>{
+
+                        if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+                            
+                        }
+                        else{
+                            //alert('desk')
+                        }})
+                    </script>
+
+                </div>
+
                 
-
             </div>
     </div>
 
@@ -259,282 +126,6 @@
 
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-<script>
-    $(document).ready(()=>{
-
-   
-        $('#modal-redirect').modal('show')
-
-        
-
-        $('#link-calculadora').addClass('active')
-
-        $('#decimal').mask("000000000")
-        $('#octal').mask("000000000")
-        $('#binario').mask("000000000000")
-
-        $('#decimal').keyup(function(){
-
-            $('#binario').val(divisaoFunction($('#decimal').val(), 2))
-
-            $('#octal').val(divisaoFunction($('#decimal').val(), 8))
-            $('#hexadecimal').val(divisaoFunction($('#decimal').val(), 16))
-          
-        })
-
-    
-
-        $('#octal').keyup(function () { 
-            this.value = this.value.replace(/[^0-7]/,'').replace(' ','');
-
-            $('#decimal').val(polinomio($('#octal').val(), 8))
-
-            $('#binario').val(groupBits('octal',$('#octal').val(), 3))
-
-        })
-
-
-
-        $('#hexadecimal').keyup(function () { 
-            this.value = this.value.replace(/[^A-Fa-f 0-9]/,'').replace(' ','');
-
-            $('#decimal').val(polinomio($('#hexadecimal').val(), 16))
-
-            $('#binario').val(groupBits('hexadecimal',$('#hexadecimal').val(), 4))
-
-        })
-
-     
-
-        $('#binario').keyup(function (){
-            
-            this.value = this.value.replace(/[^0-1]/, '').replace(' ', '')
-
-          
-            $('#decimal').val(polinomio($('#binario').val(), 2)) 
-
-            $('#hexadecimal').val(groupBits('binario',$('#binario').val(), 4))
-
-            $('#octal').val(groupBits('binario',$('#binario').val(), 3))
-
-        })
-    })
-
-</script>
-
-<script>
-
-    function groupBits(sistema,numberGp, bits){
-        countBits = 0
-        arrayList = []
-        breaking = ''
-        wordTemp = ''
-
-        if(sistema == 'binario')
-        {
-            numberGp = numberGp.split('').reverse().join('')
-
-            divisao = Math.ceil(numberGp.length / bits);
-
-            for(z = 0; z < divisao; z++)
-            {
-                if(numberGp.substr(countBits, bits) != ''){
-
-                    if(countBits === 0)
-                    {
-                        arrayList.push(numberGp.substr(countBits,bits))
-                    
-
-                    }else{
-                        arrayList.push(numberGp.substr(countBits, bits))
-                
-                    }
-            
-
-                    wordTemp = arrayList[z]
-                    wordTemp = wordTemp.split('').reverse().join('')
-
-                    arrayList[z] = wordTemp
-
-                    
-                    
-                }
-
-                countBits += bits
-                
-            }
-
-
-
-            countBits = 0
-
-            for(let item of arrayList)
-            {
-                
-                arrayList[countBits] = polinomio(item, 2)
-                countBits += 1
-            }
-
-            if(bits == 4)
-            {
-                arrayList = (arrayList.reverse().toString()).replaceAll('10', 'A').replaceAll('11', 'B').replaceAll('12', 'C').replaceAll('13', 'D').replaceAll('14', 'E').replaceAll('15', 'F').replaceAll(',','')
-                
-            }
-
-            if(bits == 3)
-            {
-                arrayList = (arrayList.reverse().toString()).replaceAll(',','')
-            }
-
-
-        }
-
-        numberDecimal = 0
-
-        if(sistema == 'octal')
-        {
-            numberDecimal = polinomio(numberGp, 8)
-            arrayList = divisaoFunction(numberDecimal, 2)
-
-            $('#hexadecimal').val( divisaoFunction(numberDecimal, 16))
-        }
-
-        if(sistema == 'hexadecimal')
-        {
-            numberDecimal = polinomio(numberGp, 16)
-            arrayList = divisaoFunction(numberDecimal, 2)
-        
-
-            $('#octal').val( divisaoFunction(numberDecimal, 8))
-        }
-       
-           
-        return arrayList
-        
-    }
-
-       
-        
-    
-
-    function polinomio(number, base)
-    {
-        newNumber = 0
-        numberPosition = 0
-        number = number.split("").reverse().join("")
-
-        
-
-        for(i = 0; i < number.length; i++)
-        {
-            numberPosition = 0
-
-            if(isNaN(number[i]) == false){
-
-                newNumber += number[i] * Math.pow(base, i)
-
-               
-
-            } else{
-
-                numberPosition = (number[i].toUpperCase()).replaceAll('A','10').replaceAll('B','11').replaceAll('C','12').replaceAll('D',13).replaceAll('E','14').replaceAll('F','15')
-                
-                newNumber += numberPosition * Math.pow(base, i)
-
-                
-            }
-
-           
-        }
-
-        
-        return newNumber 
-        
-    }
-  
-
-   
-
-   function divisaoFunction(number, base){
-
-    newNumber = []
-    count = 0
-    resto = 0
-
-
-        while(true)
-        {
-
-             if(number <= 1){
-
-                newNumber[count] =  number;
-                break
-
-             }
-                resto = (number % base);
-
-                number = (number / base)|0;
-
-              
-
-                
-
-                newNumber[count] =  resto;
-
-                count += 1;
-
-        }
-
-       
-        console.log(newNumber)
-        if(base == 2)
-        {
-            newNumber =  (newNumber.reverse().toString()).replaceAll(',','')
-            return newNumber
-        }
-      
-
-            newNumber = newNumber.reverse()
-
-            countB = 0
-
-           while(true)
-            {
-                if(newNumber[countB] === 0)
-                {
-                    newNumber.splice(countB, 1)
-
-                  
-                    console.log(newNumber)
-
-                }
-                if(newNumber[countB] != 0)
-                { 
-                  
-                    break; 
-                    
-                }
-
-                countB += 1
-                
-            }
-
-
-
-        if(base == 8)
-        {
-            newNumber = (newNumber.toString()).replaceAll(',','')
-        }
-
-        if(base == 16)
-        {
-            newNumber =((newNumber.toString()).replaceAll('10', 'A').replaceAll('11', 'B').replaceAll('12', 'C').replaceAll('13', 'D').replaceAll('14', 'E').replaceAll('15', 'F')).replaceAll(',','')
-        }
-
-        return newNumber
-
-}
-</script>
-    
+<script src="javascript.js"></script> 
 </body>
 </html>
