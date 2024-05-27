@@ -198,6 +198,11 @@
                         })
                        
                         $('#btn-calcular').click(()=>{
+                            if($('#decimal').val() == '' || $('#decimal').val() == 0)
+                            {
+                                alert('Digite um número antes de saber o cálculo...')
+                                return 
+                            }
                             htmlCalculo = ''
                             const valDe = $('#de').val()
                             const valPara = $('#para').val()
