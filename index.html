@@ -196,11 +196,7 @@
                            
                           
                         })
-                        $('#para').change(function(){
-                            $('#de').html('<option value="decimal">Decimal</option><option value="hexadecimal">Hexadecimal</option><option value="octal">Octal</option><option value="binario">Binário</option>')
-                            var value = $(this).val()
-                            $('#de').find('[value="'+value+'"]').remove();
-                        })
+                       
                         $('#btn-calcular').click(()=>{
                             htmlCalculo = ''
                             const valDe = $('#de').val()
