@@ -144,23 +144,161 @@
         </div>
       </div>
 
-      <div class="modal fade modal-lg"  id="modal-calculo" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true">
+      <div class="modal fade modal-lg"  id="modal-calculo" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog  modal-dialog-centered modal-dialog-scrollable">
           <div class="modal-content">
             <div class="modal-header">
               <h1 class="modal-title fs-5">Cálculo</h1>
+              <p style="margin-left: 20px;" id="numero-calcular" class="modal-title"></p>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             
             <div id="body-modal-calculo" class="modal-body">
-               <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Maiores modi adipisci sunt ratione tempore porro cupiditate quasi fugit, obcaecati nisi iste! Excepturi optio quam sunt. Ipsa similique vel quaerat pariatur.</p>
-               <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quam necessitatibus quisquam odit modi maxime! Aliquam eaque sint neque, deserunt placeat reiciendis iste in alias sunt! Dolorum ea recusandae aliquam libero!</p>
-               <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Hic et, inventore possimus libero deleniti reiciendis, culpa accusamus minima veniam blanditiis mollitia eius. Totam laudantium quaerat architecto dicta suscipit eaque assumenda.</p>
-                <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nisi molestias quibusdam inventore et maxime? Corrupti atque fugit quo id at perferendis dicta, dolorum qui sapiente nisi quas nesciunt laborum quaerat.</p>
+                <div class="row">
+                    <div class="col-5 col-sm-5 col-md-3">
+                        <label for="de" class="form-label">De</label>
+                        <select name="de" class="form-control" id="de">
+                            <option value="decimal">Decimal</option>
+                            <option value="hexadecimal">Hexadecimal</option>
+                            <option value="octal">Octal</option>
+                            <option value="binario">Binário</option>
+                        </select>
+                    </div>
+                    <div class="col-2 col-sm-2 col-md-1" style="margin-top: auto;">
+                        <svg style="margin-bottom: 8px;"  xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8"/>
+                        </svg>
+                    </div>
+                    <div class="col-5 col-sm-5 col-md-3">
+                        <label for="para" class="form-label">Para</label>
+                        <select name="para" class="form-control" id="para">
+                            <option value="hexadecimal">Hexadecimal</option>
+                            <option value="octal">Octal</option>
+                            <option value="binario">Binário</option>
+                        </select>
+                    </div>
+                    <div id="result-calculo" class="row">
+
+                    </div>
+                </div>
             </div>
             
             <div class="modal-footer g-3">
               <div id="group-buttons-modal-redirect" class="d-grid gap-2 d-md-flex justify-content-md-centered" style="width:100%">
-                  <button id="btn-redirect-saved" style="width: 100%;" type="button" onmouseleave="" class="btn btn-success" data-bs-dismiss="modal">Ok</button>
+                  <button id="btn-calcular" style="width: 100%;" type="button" class="btn btn-primary" >Calcular</button>
+
+                  <script>
+                    $(document).ready(()=>{
+                        $('#de').change(function(){
+                            $('#para').html('<option value="decimal">Decimal</option><option value="hexadecimal">Hexadecimal</option><option value="octal">Octal</option><option value="binario">Binário</option>')
+                            var value = $(this).val()
+                            $('#para').find('[value="'+value+'"]').remove();
+                           
+                          
+                        })
+                        $('#para').change(function(){
+                            $('#de').html('<option value="decimal">Decimal</option><option value="hexadecimal">Hexadecimal</option><option value="octal">Octal</option><option value="binario">Binário</option>')
+                            var value = $(this).val()
+                            $('#de').find('[value="'+value+'"]').remove();
+                        })
+                        $('#btn-calcular').click(()=>{
+                            htmlCalculo = ''
+                            const valDe = $('#de').val()
+                            const valPara = $('#para').val()
+                            if(valDe == 'decimal')
+                            {
+                                if(valPara == 'hexadecimal')
+                                {
+                                    $('#hexadecimal').val(divisaoFunction($('#decimal').val(), 16))
+                                    $('#result-calculo').html(htmlCalculo)
+                                }
+                                if(valPara == 'octal')
+                                {
+                                    $('#octal').val(divisaoFunction($('#decimal').val(), 8))
+                                    $('#result-calculo').html(htmlCalculo)
+                                }
+                                if(valPara == 'binario')
+                                {
+                                    $('#binario').val(divisaoFunction($('#decimal').val(), 2))
+                                    $('#result-calculo').html(htmlCalculo)
+                                }
+                            }
+                            if(valDe == 'hexadecimal')
+                            {
+                                
+                                if(valPara == 'decimal')
+                                {
+                                    $('#decimal').val(polinomio($('#hexadecimal').val(), 16))
+                                    $('#result-calculo').html(htmlCalculo)
+                                    $('#numero-calcular').html('<b>Número:</b> '+$('#hexadecimal').val()+'')
+                                }
+                                if(valPara == 'octal')
+                                {
+                                    groupBits('hexadecimalOctal',$('#hexadecimal').val(), 4)
+                                    $('#result-calculo').html(htmlCalculo)
+                                    $('#numero-calcular').html('<b>Número:</b> '+$('#hexadecimal').val()+'')
+                                }
+                                if(valPara == 'binario')
+                                {
+                                    $('#binario').val(groupBits('hexadecimalBinario',$('#hexadecimal').val(), 4))
+                                    $('#result-calculo').html(htmlCalculo)
+                                    $('#numero-calcular').html('<b>Número:</b> '+$('#hexadecimal').val()+'')
+                                }
+                               
+                            }
+                            if(valDe == 'octal')
+                            {
+                              
+                                if(valPara == 'decimal')
+                                {
+                                    $('#decimal').val(polinomio($('#octal').val(), 8))
+                                    $('#result-calculo').html(htmlCalculo)
+                                    $('#numero-calcular').html('<b>Número:</b> '+$('#octal').val()+'')
+                                }
+
+                                if(valPara == 'hexadecimal')
+                                {
+                                    groupBits('octalHexadecimal',$('#octal').val(), 3)
+                                    $('#result-calculo').html(htmlCalculo)
+                                    $('#numero-calcular').html('<b>Número:</b> '+$('#octal').val()+'')
+                                }
+
+                                if(valPara == 'binario')
+                                {
+                                    $('#binario').val(groupBits('octalBinario',$('#octal').val(), 3))
+                                    $('#result-calculo').html(htmlCalculo)
+                                    $('#numero-calcular').html('<b>Número:</b> '+$('#octal').val()+'')
+                                }
+                               
+                            }
+                            if(valDe == 'binario')
+                            {
+                              
+                                if(valPara == 'decimal')
+                                {
+                                    $('#decimal').val(polinomio($('#binario').val(), 2))
+                                    $('#result-calculo').html(htmlCalculo)
+                                    $('#numero-calcular').html('<b>Número:</b> '+$('#binario').val()+'')
+                                }
+
+                                if(valPara == 'hexadecimal')
+                                {
+                                    $('#hexadecimal').val(groupBits('binario',$('#binario').val(), 4))
+                                    $('#result-calculo').html(htmlCalculo)
+                                    $('#numero-calcular').html('<b>Número:</b> '+$('#binario').val()+'')
+                                }
+
+                                if(valPara == 'octal')
+                                {
+                                    $('#octal').val(groupBits('binario',$('#binario').val(), 3))
+                                    $('#result-calculo').html(htmlCalculo)
+                                    $('#numero-calcular').html('<b>Número:</b> '+$('#binario').val()+'')
+                                }
+                               
+                            }
+                        })
+                    })
+                  </script>
               </div>
             </div>
           </div>

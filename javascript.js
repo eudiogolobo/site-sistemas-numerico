@@ -1,5 +1,6 @@
 $(document).ready(()=>{
 
+    htmlCalculo = ''
     col = '<tr><td>0</td><td>0</td><td>0</td><td>0</td></tr>'
     for(var r = 1; r <= 20; r++)
     {
@@ -32,6 +33,7 @@ $(document).ready(()=>{
 
         $('#octal').val(divisaoFunction($('#decimal').val(), 8))
         $('#hexadecimal').val(divisaoFunction($('#decimal').val(), 16))
+        htmlCalculo = ''
       
     })
 
@@ -41,8 +43,9 @@ $(document).ready(()=>{
         this.value = this.value.replace(/[^0-7]/,'').replace(' ','');
 
         $('#decimal').val(polinomio($('#octal').val(), 8))
-
-        $('#binario').val(groupBits('octal',$('#octal').val(), 3))
+        groupBits('octalHexadecimal',$('#octal').val(), 3)
+        $('#binario').val(groupBits('octalBinario',$('#octal').val(), 3))
+        htmlCalculo = ''
 
     })
 
@@ -53,7 +56,10 @@ $(document).ready(()=>{
 
         $('#decimal').val(polinomio($('#hexadecimal').val(), 16))
 
-        $('#binario').val(groupBits('hexadecimal',$('#hexadecimal').val(), 4))
+        groupBits('hexadecimalOctal',$('#hexadecimal').val(), 4)
+
+        $('#binario').val(groupBits('hexadecimalBinario',$('#hexadecimal').val(), 4))
+        htmlCalculo = ''
 
     })
 
@@ -69,11 +75,13 @@ $(document).ready(()=>{
         $('#hexadecimal').val(groupBits('binario',$('#binario').val(), 4))
 
         $('#octal').val(groupBits('binario',$('#binario').val(), 3))
+        htmlCalculo = ''
 
     })
 })
 
 function groupBits(sistema,numberGp, bits){
+   
     countBits = 0
     arrayList = []
     breaking = ''
@@ -82,6 +90,8 @@ function groupBits(sistema,numberGp, bits){
     if(sistema == 'binario')
     {
         numberGp = numberGp.split('').reverse().join('')
+
+        htmlCalculo += '<h5 class="mt-5">Vamos inverter o número binário para conseguirmos calcular</h5><hr><p>Ele vai ficar assim: '+numberGp+'</p>'
 
         divisao = Math.ceil(numberGp.length / bits);
 
@@ -92,7 +102,6 @@ function groupBits(sistema,numberGp, bits){
                 if(countBits === 0)
                 {
                     arrayList.push(numberGp.substr(countBits,bits))
-                
 
                 }else{
                     arrayList.push(numberGp.substr(countBits, bits))
@@ -112,7 +121,8 @@ function groupBits(sistema,numberGp, bits){
             countBits += bits
             
         }
-
+        
+        htmlCalculo += '<h5 class="mt-5">Vamos quebrar o número em binário em grupos de '+bits+'</h5><hr><p>Então vai ficar assim: '+arrayList+'</p>'
 
 
         countBits = 0
@@ -126,13 +136,19 @@ function groupBits(sistema,numberGp, bits){
 
         if(bits == 4)
         {
+            htmlCalculo += '<h5 class="mt-5">Resultado dos agrupamentos de 4 bits</h5><hr><p><strong>Resultado = </strong>'+arrayList+'</p>'
+           
             arrayList = (arrayList.reverse().toString()).replaceAll('10', 'A').replaceAll('11', 'B').replaceAll('12', 'C').replaceAll('13', 'D').replaceAll('14', 'E').replaceAll('15', 'F').replaceAll(',','')
-            
+
+            htmlCalculo += '<h5 class="mt-5">Inverter a ordem dos resultados e substituir letras por números equivalentes</h5><hr><p>Agora iremos inverter a ordem dos resultados que havíamos invertido para realizar o cálculo e substituir as letras pelos números equivalentes.</p><p> Ficará: '+arrayList+'</p>'
+
         }
 
         if(bits == 3)
         {
+            htmlCalculo += '<h5 class="mt-5">Resultado dos agrupamentos de 4 bits</h5><hr><p><strong>Resultado = </strong>'+arrayList+'</p>'
             arrayList = (arrayList.reverse().toString()).replaceAll(',','')
+            htmlCalculo += '<h5 class="mt-5">Inverter a ordem dos resultados e substituir letras por números equivalentes</h5><hr><p>Agora iremos inverter a ordem dos resultados que havíamos invertido para realizar o cálculo e substituir as letras pelos números equivalentes.</p><p> Ficará: '+arrayList+'</p>'
         }
 
 
@@ -140,21 +156,33 @@ function groupBits(sistema,numberGp, bits){
 
     numberDecimal = 0
 
-    if(sistema == 'octal')
+    if(sistema == 'octalHexadecimal')
+    {
+        numberDecimal = polinomio(numberGp, 8)
+         $('#hexadecimal').val( divisaoFunction(numberDecimal, 16))
+         return 
+    }
+
+    if(sistema == 'octalBinario')
     {
         numberDecimal = polinomio(numberGp, 8)
         arrayList = divisaoFunction(numberDecimal, 2)
-
-        $('#hexadecimal').val( divisaoFunction(numberDecimal, 16))
     }
 
-    if(sistema == 'hexadecimal')
+    if(sistema == 'hexadecimalOctal')
+    {
+        numberDecimal = polinomio(numberGp, 16)
+       
+        return $('#octal').val( divisaoFunction(numberDecimal, 8))
+        
+    }
+
+
+    if(sistema == 'hexadecimalBinario')
     {
         numberDecimal = polinomio(numberGp, 16)
         arrayList = divisaoFunction(numberDecimal, 2)
-    
-
-        $('#octal').val( divisaoFunction(numberDecimal, 8))
+       
     }
    
        
@@ -168,26 +196,37 @@ function groupBits(sistema,numberGp, bits){
 
 function polinomio(number, base)
 {
+  
     newNumber = 0
     numberPosition = 0
-    number = number.split("").reverse().join("")
-
     
-
+    number = number.split("").reverse().join("")
+    if(number.length > 1)
+    { 
+        htmlCalculo +='<h5 class="mt-5">Inverter</h5><hr><p>Podemos inverter o número, teremos então: '+number+'</p>' 
+        htmlCalculo += '<h5 class="mt-5">Calcular as potências</h5><hr></hr>' 
+    } else{
+        htmlCalculo += '<h5 class="mt-5">Calcular a potência</h5><hr></hr>'
+    }
+   
+    
+    console.log(htmlCalculo)
+   
     for(i = 0; i < number.length; i++)
     {
         numberPosition = 0
 
         if(isNaN(number[i]) == false){
 
+            htmlCalculo +='<div class="col-6 col-sm-4 col-md-3"><p> '+number[i]+' X '+base+'<sup>'+i+'</sup>  = '+number[i] * Math.pow(base, i)+'</p></div>' 
             newNumber += number[i] * Math.pow(base, i)
-
+       
            
 
         } else{
 
             numberPosition = (number[i].toUpperCase()).replaceAll('A','10').replaceAll('B','11').replaceAll('C','12').replaceAll('D',13).replaceAll('E','14').replaceAll('F','15')
-            
+            htmlCalculo +='<p> '+number[i]+' X '+base+'<sup>'+i+'</sup>  = '+numberPosition * Math.pow(base, i)+'</p>' 
             newNumber += numberPosition * Math.pow(base, i)
 
             
@@ -196,6 +235,7 @@ function polinomio(number, base)
        
     }
 
+    htmlCalculo += '<h5 class="mt-5">Somar as potências</h5><hr></hr><p>Em seguida somaremos todos os resultados do passo anteriror. <b>Soma </b>= '+ newNumber +'</p>'
     
     return newNumber 
     
@@ -205,7 +245,7 @@ function polinomio(number, base)
 
 
 function divisaoFunction(number, base){
-
+htmlCalculo += '<h5 class="mt-5">Divisão</h5><hr>'
 newNumber = []
 count = 0
 resto = 0
@@ -221,9 +261,13 @@ resto = 0
 
          }
             resto = (number % base);
+    
+
+            htmlCalculo += '<p> '+ number +' / '+ base +' = '+ ((number / base)|0) +' -> Resto = '+(number % base)+'</p>'
 
             number = (number / base)|0;
 
+        
           
 
             
@@ -234,25 +278,32 @@ resto = 0
 
     }
 
-   
-    console.log(newNumber)
+    htmlCalculo += '<p>Então teremos como resultado das divisões: '+newNumber+'</p>'
+
     if(base == 2)
     {
         newNumber =  (newNumber.reverse().toString()).replaceAll(',','')
+        htmlCalculo +='<h5 class="mt-5">Inverter</h5><hr><p>Agora vamos inverter a ordem dos resultados, teremos então: '+newNumber+'</p>'
+        htmlCalculo +='<h5 class="mt-5">Resultado</h5><hr><p> <strong>Resultado: </strong> '+newNumber+'</p>'
+              
         return newNumber
     }
+  
   
 
         newNumber = newNumber.reverse()
 
+        htmlCalculo +='<h5 class="mt-5">Inverter</h5><hr><p>Agora vamos inverter a ordem dos resultados, teremos então: '+newNumber+'</p>'
         countB = 0
 
+   
        while(true)
         {
             if(newNumber[countB] === 0)
             {
                 newNumber.splice(countB, 1)
 
+                htmlCalculo +='<h5 class="mt-5">Remover zeros à esquerda</h5><hr><p>Vamos remover os zeros à esquerda, ficará: '+newNumber+'</p>'
               
                 console.log(newNumber)
 
@@ -273,11 +324,14 @@ resto = 0
     if(base == 8)
     {
         newNumber = (newNumber.toString()).replaceAll(',','')
+        htmlCalculo +='<h5 class="mt-5">Resultado</h5><hr><p> <strong>Resultado: </strong> '+newNumber+'</p>'
     }
 
     if(base == 16)
     {
+
         newNumber =((newNumber.toString()).replaceAll('10', 'A').replaceAll('11', 'B').replaceAll('12', 'C').replaceAll('13', 'D').replaceAll('14', 'E').replaceAll('15', 'F')).replaceAll(',','')
+        htmlCalculo +='<h5 class="mt-5">Substituir números por letras equivalentes</h5><hr><p> <strong>Resultado: </strong> '+newNumber+'</p>'
     }
 
     return newNumber
